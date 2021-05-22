@@ -103,12 +103,11 @@ public class ClientPlayerActionPacketTranslator implements JavaTranslator {
 
 
 
-        ItemData itemData = ItemData.builder().id(oldItem.getId()).damage(oldItem.getDamage()).count(itemCount).tag(oldItem.getTag()).canPlace(oldItem.getCanPlace()).canBreak(oldItem.getCanBreak()).blockingTicks(oldItem.getBlockingTicks()).build(),
-                newItem = ItemData.builder().id(oldItem.getId()).damage(oldItem.getDamage()).count(oldItem.getCount() - itemCount).tag(oldItem.getTag()).canPlace(oldItem.getCanPlace()).canBreak(oldItem.getCanBreak()).blockingTicks(oldItem.getBlockingTicks()).build();
+        ItemData itemData = ItemData.builder().id(oldItem.getId()).damage(oldItem.getDamage()).count(itemCount).tag(oldItem.getTag()).canPlace(oldItem.getCanPlace()).canBreak(oldItem.getCanBreak()).blockingTicks(oldItem.getBlockingTicks()).usingNetId(false).build(),
+                newItem = ItemData.builder().id(oldItem.getId()).damage(oldItem.getDamage()).count(oldItem.getCount() - itemCount).tag(oldItem.getTag()).canPlace(oldItem.getCanPlace()).canBreak(oldItem.getCanBreak()).blockingTicks(oldItem.getBlockingTicks()).usingNetId(false).build();
         if (newItem.getCount() == 0) {
             newItem = ItemData.AIR;
         }
-
         InventoryTransactionPacket inventoryTransactionPacket = new InventoryTransactionPacket();
         inventoryTransactionPacket.setLegacyRequestId(0);
         inventoryTransactionPacket.setTransactionType(TransactionType.NORMAL);
@@ -117,8 +116,6 @@ public class ClientPlayerActionPacketTranslator implements JavaTranslator {
         inventoryTransactionPacket.setBlockFace(0);
         inventoryTransactionPacket.setHotbarSlot(0);
         inventoryTransactionPacket.setBlockRuntimeId(0);
-        //TODO check
-        //inventoryTransactionPacket.setHasNetworkIds(false);
         InventorySource inventorySource = InventorySource.fromWorldInteraction(InventorySource.Flag.DROP_ITEM);
         InventoryActionData inventoryActionData = new InventoryActionData(inventorySource, 0, ItemData.AIR, itemData);
         inventoryTransactionPacket.getActions().add(inventoryActionData);
